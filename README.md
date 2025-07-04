@@ -3,7 +3,7 @@
 [활용 예제 5개](https://github.com/audalsgh/20250704/blob/main/0704_python_matplotlib_%ED%95%A8%EC%88%98%EC%98%88%EC%A0%9C5%EA%B0%9C.ipynb)
 
 ## 인공지능 개요 짧게 수업
-**AI > ML > DL 순서.
+**AI > ML > DL 순서.**
 - 지도학습 : 정답이 있는 데이터(라벨링, 규칙이 있음)로 학습하고, 입력->출력 관계가 존재한다.
 - 비지도학습 : 학습할 데이터만 있고 (라벨링, 규칙은 없음)정답은 없다. 비정상적인 상황을 감지하는데 쓰임.
 - 강화학습 : 시행착오를 통한 학습으로, 보상을 최대화하는 전략을 사용한다. ex) 최단거리
@@ -32,7 +32,7 @@
  데이터 증강(Augmentation): 회전, 이동, 밝기 변화 등<br>
  학습/검증/테스트 셋 분리
 
-5. 자율주행에 쓰이는 짧은 예시 코드 (30줄 내외)
+**5. 자율주행에 쓰이는 짧은 예시 코드 (30줄 내외)**
 ```python
 import os  #tf 라이브러리, keras 환경 설치
 from tensorflow.keras.models import Sequential
