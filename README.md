@@ -79,7 +79,7 @@ model.fit(
     epochs=10
 )
 
-# 4) 평가 및 저장
+# 4) 지도학습 결과를 평가 및 저장하기.
 loss, acc = model.evaluate(val_gen)
 print(f"Validation accuracy: {acc*100:.2f}%")
 model.save('traffic_sign_classifier.h5')
