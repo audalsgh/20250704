@@ -15,8 +15,8 @@
 
 ## 지도학습(Supervised Learning)과 자율주행의 관계
 1. 개요<br>
-지도학습은 입력 데이터를 바탕으로 정답(레이블)을 학습하여 새로운 입력에 대한 예측을 수행하는 기계학습 기법입니다. <br>
-자율주행 시스템에서 지도학습은 주행 환경 인식(차선 인식, 객체 탐지, 신호등 인식 등)과 제어 명령 예측(스티어링 각도, 가속/제동 명령 예측 등)에 필수적으로 활용됩니다.
+지도학습은 입력 데이터를 바탕으로 정답(레이블)을 학습하여 새로운 입력에 대한 예측을 수행하는 기계학습 기법.<br>
+자율주행 시스템에서 지도학습은 주행 환경 인식(차선 인식, 객체 탐지, 신호등 인식 등)과 제어 명령 예측(스티어링 각도, 가속/제동 명령 예측 등)에 필수적으로 활용됨.
 
 3. 활용 사례<br>
 - 차선 감지(Lane Detection): 도로 영상을 입력으로 차선 위치를 학습하고, 실시간으로 차선을 검출하여 차로 유지 제어에 활용
@@ -28,6 +28,59 @@
 - 데이터 수집: 전방 카메라 영상(image)과 차량의 스티어링 각도, 속도 같은 주행 로그(record) 동기화 데이터 확보
 - 레이블링: 각 영상 프레임마다 스티어링 각도, 제동 여부 등을 레이블로 매핑
 - 전처리:<br>
-해상도 조정 및 정규화<br>
-데이터 증강(Augmentation): 회전, 이동, 밝기 변화 등<br>
-학습/검증/테스트 셋 분리
+ 해상도 조정 및 정규화<br>
+ 데이터 증강(Augmentation): 회전, 이동, 밝기 변화 등<br>
+ 학습/검증/테스트 셋 분리
+
+5. 자율주행에 쓰이는 짧은 예시 코드 (30줄 내외)
+```python
+   import os
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
+from tensorflow.keras.preprocessing.image import ImageDataGenerator
+
+# 데이터 디렉토리 설정
+train_dir = 'data/traffic_signs/train'
+val_dir   = 'data/traffic_signs/val'
+
+# 1) 데이터 증강 및 전처리
+train_gen = ImageDataGenerator(
+    rescale=1./255,
+    rotation_range=15,
+    width_shift_range=0.1,
+    height_shift_range=0.1,
+    zoom_range=0.1
+).flow_from_directory(
+    train_dir, target_size=(64,64), batch_size=32, class_mode='categorical'
+)
+val_gen = ImageDataGenerator(rescale=1./255).flow_from_directory(
+    val_dir, target_size=(64,64), batch_size=32, class_mode='categorical'
+)
+
+# 2) 모델 정의
+model = Sequential([
+    Conv2D(32, (3,3), activation='relu', input_shape=(64,64,3)),
+    MaxPooling2D(2,2),
+    Conv2D(64, (3,3), activation='relu'),
+    MaxPooling2D(2,2),
+    Flatten(),
+    Dense(128, activation='relu'),
+    Dropout(0.5),
+    Dense(train_gen.num_classes, activation='softmax')
+])
+
+# 3) 컴파일 및 학습
+model.compile(optimizer='adam',
+              loss='categorical_crossentropy',
+              metrics=['accuracy'])
+model.fit(
+    train_gen,
+    validation_data=val_gen,
+    epochs=10
+)
+
+# 4) 평가 및 저장
+loss, acc = model.evaluate(val_gen)
+print(f"Validation accuracy: {acc*100:.2f}%")
+model.save('traffic_sign_classifier.h5')
+```
