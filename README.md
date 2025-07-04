@@ -34,7 +34,7 @@
 
 5. 자율주행에 쓰이는 짧은 예시 코드 (30줄 내외)
 ```python
-   import os
+import os  #tf 라이브러리, keras 환경 설치
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -57,7 +57,7 @@ val_gen = ImageDataGenerator(rescale=1./255).flow_from_directory(
     val_dir, target_size=(64,64), batch_size=32, class_mode='categorical'
 )
 
-# 2) 모델 정의
+# 2) 모델 정의, 여기서 지도학습의 정답이 되는 부분을 설정하는것
 model = Sequential([
     Conv2D(32, (3,3), activation='relu', input_shape=(64,64,3)),
     MaxPooling2D(2,2),
@@ -69,7 +69,7 @@ model = Sequential([
     Dense(train_gen.num_classes, activation='softmax')
 ])
 
-# 3) 컴파일 및 학습
+# 3) 컴파일 및 학습, 지도학습 진행
 model.compile(optimizer='adam',
               loss='categorical_crossentropy',
               metrics=['accuracy'])
