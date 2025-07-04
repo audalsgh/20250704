@@ -32,7 +32,7 @@
  데이터 증강(Augmentation): 회전, 이동, 밝기 변화 등<br>
  학습/검증/테스트 셋 분리
 
-**5. 자율주행에 쓰이는 짧은 예시 코드 (30줄 내외)**
+**5. gpt로 조사한 자율주행에 쓰이는 짧은 예시 코드 (30줄 내외)**
 ```python
 import os  #tf 라이브러리, keras 환경 설치
 from tensorflow.keras.models import Sequential
